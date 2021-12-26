@@ -5,7 +5,7 @@ use std::{
     sync::{Arc, Mutex},
 };
 
-use naia_socket_shared::{find_my_ip_address, SocketConfig};
+use naia_socket_shared::SocketConfig;
 
 use crate::packet_receiver::{ConditionedPacketReceiver, PacketReceiver, PacketReceiverTrait};
 
@@ -38,9 +38,7 @@ impl Socket {
             panic!("Socket already listening!");
         }
 
-        let client_ip_address = find_my_ip_address().expect("cannot find current ip address");
-
-        let socket = Arc::new(Mutex::new(UdpSocket::bind((client_ip_address, 0)).unwrap()));
+        let socket = Arc::new(Mutex::new(UdpSocket::bind("0.0.0.0:0").unwrap()));
         socket
             .as_ref()
             .lock()
